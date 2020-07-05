@@ -8,10 +8,12 @@ void Init()
 	CIniReader iniReader("AutosculptFix.ini");
 	bool MakeWheelsRotated = iniReader.ReadInteger((char*)"GENERAL", (char*)"MakeWheelsRotated", 1);
 
+	// Fix crash
 	injector::MakeNOP(0x007E3544, 10, true);
 
-	char fixAutosculptRimRender[3] = { 0xB1, 0x01, 0x90 };
-	injector::WriteMemoryRaw(0x007DE6E3, fixAutosculptRimRender, 3, true);
+	// Fix autosculpt render
+	injector::WriteMemory<char>(0x007E0472, 0xEB, true);
+	injector::WriteMemory<char>(0x007E0216, 0xEB, true);
 
 	if (MakeWheelsRotated)
 	{
